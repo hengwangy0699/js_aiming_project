@@ -8,7 +8,7 @@ function menu(){
 	min = 0;
 	sec = 0;
 	var req = new XMLHttpRequest();
-	req.open("get", "http://127.0.0.1:6699/menu.html");
+	req.open("get", "https://hengwangy0699.github.io/js_aiming_project/menu.html");
 	req.onload = function(){
 		var content = document.getElementById("board");
 		content.innerHTML = this.responseText;
@@ -19,7 +19,7 @@ function menu(){
 function gamemode(mode_num){
 	mode = mode_num;
 	var req = new XMLHttpRequest();
-	req.open("get", "http://127.0.0.1:6699/gamemode.html");
+	req.open("get", "https://hengwangy0699.github.io/js_aiming_project/gamemode.html");
 	req.onload = function(){
 		var content = document.getElementById("board");
 		content.innerHTML = this.responseText;
