@@ -1,0 +1,87 @@
+#g_table {
+	width: 550px;
+	height: 40px;	
+	top: 5%;
+	left: 50%;
+	transform: translate(-50%, 0%);
+	position: absolute;
+	background: #ADADAD;
+	table-layout:fixed;
+}
+
+#td {
+	text-align: center;
+}
+
+#timer {
+	position:relative;
+	
+}
+
+#pad_timer {
+	width: 250px;
+	height: 115px;
+	top: 26%;
+	left: 50%;
+	transform: translate(-50%, 0%);
+	position: absolute;
+	font-size: 110px;
+	color: rgba(190, 190, 190, 0.05);
+}
+#pad_timer:hover{
+	cursor: default;
+}
+
+#countdown {
+	width: 250px;
+	height: 75px;
+	top: 55%;
+	left: 50%;
+	transform: translate(-50%, 0%);
+	position: absolute;
+	font-size: 50px;
+	text-align: center;
+	color: rgba(190, 190, 190, 0.8);
+}
+#countdown:hover {
+	cursor: default
+}
+
+#b1 {
+	left: 50%;
+	transform: translate(-50%, 0%);
+	position: absolute;
+}
+#b2 {
+	right: 25px;
+	position: absolute;
+}
+
+
+#footer_text {	
+	width: 550px;
+	height: 40px;	
+	left: 50%;
+	transform: translate(-50%, 0%);
+	position: absolute;
+	text-align: center;
+}
+
+#block1 {
+	width: 180px;
+	height: 250px;
+	left: 0%;
+	position: absolute;
+}
+#block2 {
+	width: 180px;
+	height: 250px;
+	left: 33%;
+	position: absolute;
+}
+#block3 {
+	width: 180px;
+	height: 250px;
+	left: 66%;
+	position: absolute;
+}
