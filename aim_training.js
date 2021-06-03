@@ -96,7 +96,7 @@ function timerCycle(){
 	}
 }
 
-function readytoplay(){
+readytoplay = function() {
 	footer_text.innerHTML = "Press ESC/Spacebar to end the game"
 	b1.remove();
 	b2.remove();
@@ -162,7 +162,7 @@ function end_game(event){
 
 function handleMouseMove(event){mousePos = {x:event.pageX, y:event.pageY};}
 
-function set_difficulty(diff){
+set_difficulty = function(diff){
 	difficulty = diff;
 	container.style.transition = "0.5s";
 	if(difficulty == 1){
