@@ -1,4 +1,4 @@
-var file_path = "https://hengwangy0699.github.io/js_aiming_project/"
+var file_path ="https://hengwangy0699.github.io/js_aiming_project/"
 function menu(){
 	stop = true;
 	if(game)
@@ -39,11 +39,22 @@ function gamemode(mode_num){
 		if(mode_num == 1){
 			timer.innerHTML = "Time: 00:30";
 			pad_timer.innerHTML = "00:30";
+			cd_timer.innerHTML = "Try to click on as many balls as you can. The game will end in 30 seconds.";
 		}
-		if(mode_num == 2)
+		else if(mode_num == 2){
 			target.innerHTML = "Following time: N/A";
-		if(mode_num == 6)
+			cd_timer.innerHTML = "Stick the ball with your pointer<br>for as long as you can!";
+		}
+		else if(mode_num == 3)
+			cd_timer.innerHTML = "How was the warm-up?<br>Lets try something HARDER.<br>Click on as many balls as you can.<br><h4>This time be quick and accurate</h4>";
+		else if(mode_num == 4)
+			cd_timer.innerHTML = "Two balls at the same time!<br>Can you catch 'em all?";
+		else if(mode_num == 5)
+			cd_timer.innerHTML = "Oh no! The balls are moving!<br>Catch them before they escape!";
+		else if(mode_num == 6){
 			target.innerHTML = "Avg. time: N/A";
+			cd_timer.innerHTML = "Let's see how fast you can click on<br><b>DEEZ BAD BALLS</b>";
+		}
 	};
 	req.send();
 }
@@ -98,6 +109,7 @@ function timerCycle(){
 
 function readytoplay() {
 	footer_text.innerHTML = "Press ESC/Spacebar to end the game"
+	cd_timer.style.fontSize = "50px";
 	b1.remove();
 	b2.remove();
 	window.addEventListener("keydown", end_game, false);
@@ -137,24 +149,110 @@ function end_game(event){
 		footer_text.style.opacity = "0";
 		setTimeout(rebuild, 1500);
 		function rebuild(){
+			var score_container = container;
+			score_container.innerHTML = "<div id =\"block1\"></div><div id =\"block2\"></div>";
+			document.getElementById("board").appendChild(score_container);
 			var bt = document.createElement("button");
 			var gt = document.createElement("div");
+			document.getElementById("footer_text").remove();
 			bt.setAttribute("id", "b1");
 			bt.setAttribute("onclick", "menu()");
-			bt.style.bottom = "50px";
+			bt.style.bottom = "25px";
+			bt.style.zIndex = "1";
 			bt.innerHTML = "back";
 			gt.setAttribute("id", "g_table");
 			gt.style.background = "#FFFFFF";
-			document.getElementById("foot").appendChild(bt);
+			gt.style.fontSize = "50px";
+			document.getElementById("container").appendChild(bt);
 			title.style.transition = "0s";
 			title.style.opacity = "1";
 			ct.style.transition = "0s";
 			ct.style.opacity = "1";
 			ct.style.background = "#FFFFFF";
 			title.innerHTML = "";
-			gt.innerHTML = "Title"
+			gt.innerHTML = "Score"
 			document.getElementById("title").appendChild(gt);
-			ct.innerHTML = "<div id =\"block1\">one</div><div id =\"block2\">two</div><div id =\"block3\">three</div>"
+			ct.remove();
+			var b_1 = document.getElementById("block1");
+			var b_2 = document.getElementById("block2");
+			var text1 = "<h3>";
+			var text2 = "<h3>&nbsp</h3>";
+			if(mode == 1)
+				text1 += "Warmup mode";
+			else if(mode == 2)
+				text1 += "Speed mode";
+			else if(mode == 3)
+				text1 += "Precision mode";
+			else if(mode == 4)
+				text1 += "Doubleshot mode";
+			else if(mode == 5)
+				text1 += "Sniping mode";
+			else
+				text1 += "Reaction mode";
+			text1 += "</h3>";
+			if(!ball_cnt && !total_following_time && !duration_cnt)
+				text1 += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You have no score in this game!";
+			else{
+				text1 += "<ul><li>Game Time</li>";
+				text2 += "<ul id =\"b2ul\"><li>";
+				if(mode == 1){
+					if(sec > 20)
+						text2 += "00:0" + (30 - sec) + "</li>";
+					else
+						text2 += "00:" + (30 - sec) + "</li>";
+				}
+				else{
+					if(min < 10)
+						text2 += "0" + min + ":";
+					else
+						text2 += min + ":";
+					if(sec < 10)
+						text2 += "0" + sec + "</li>";
+					else
+						text2 += sec; + "</li>";
+				}
+				if(mode == 1 || mode == 3 || mode == 4 || mode == 5){
+					text1 += "<li>Number of Targets</li>";
+					text2 += "<li>" + ball_cnt + "</li>";
+					text1 += "<li>Target Hits</li>";
+					text2 += "<li>" + accu_cnt + "</li>";
+					text1 += "<li>Hit Rate</li>";
+					text2 += "<li>" + Math.floor((accu_cnt / ball_cnt) * 1000) / 10 + "%</li>";
+					text1 += "<li>Accuracy</li>";
+					if(dot_cnt)
+						text2 += "<li>" + Math.floor((accu_cnt / dot_cnt) * 1000) / 10 + "%</li>";
+					else
+						text2 += "<li>0%</li>";
+					
+				}
+				else if(mode == 2){
+					text1 += "<li> Time</li>";
+					text2 += "<li>" + following_time + "</li>";
+					text1 += "<li>Target Hits</li>";
+					text2 += "<li>" + accu_cnt + "</li>";
+					text1 += "<li>Hit Rate</li>";
+					text2 += "<li>" + Math.floor((accu_cnt / ball_cnt) * 1000) / 10 + "%</li>";
+					text1 += "<li>Accuracy</li>";
+					if(dot_cnt)
+						text2 += "<li>" + Math.floor((accu_cnt / dot_cnt) * 1000) / 10 + "%</li>";
+					else
+						text2 += "<li>0%</li>";
+				}
+				else if(mode == 6){
+					
+					
+				}
+				text1 += "<li>Difficulty</li></ul>";
+				if(difficulty == 1)
+					text2 += "<li>" + "EASY</li></ul>";
+				else if(difficulty == 2)
+					text2 += "<li>" + "NORMAL</li></ul>";
+				else if(difficulty == 2)
+					text2 += "<li>" + "HARD</li></ul>";
+				//statistics.push([]);
+			}
+			b_1.innerHTML = text1;
+			b_2.innerHTML = text2;
 		}
 		window.removeEventListener("keydown", end_game, false);
 	}
@@ -302,7 +400,7 @@ class ball{
 						following_time++;
 						total_following_time++;
 						//bg = "repeating-radial-gradient(#ECFFFF, #80FFFF, #00CACA, #007979, #003E3E)";
-						bg = "repeating-radial-gradient(#D2E9FF, #66B3FF, #0072E3, #004B97, #003060)"
+						bg = "repeating-radial-gradient(#D2E9FF, #66B3FF, #0072E3, #004B97, #003060)";
 					}
 					else
 						following_time = 0;
@@ -319,7 +417,7 @@ class ball{
 			}
 		}
 		if(!b.progressing){
-			b.progressing = 1
+			b.progressing = 1;
 			var progress_time = (Math.random() < 0.4) ? 1 : 1.75, tcnt = 0;
 			var initial_pos = b.randomIni(), progress, cwise = (Math.random() > 0.5) ? 1 : -1;
 			var dis = [Math.round(Math.random() * 4 + 1), Math.round(Math.random() * 4 + 1)];
@@ -452,7 +550,7 @@ class ball{
 		this.alive = 0;
 		if(mode != 6){
 			ball_cnt++;
-			target.innerHTML = "Target hits: " + accu_cnt + "/" + ball_cnt;
+			target.innerHTML = "Target Hits: " + accu_cnt + "/" + ball_cnt;
 		}
 		else{
 			for(var k = 0; k < 10; k++)
@@ -475,6 +573,7 @@ var ct, ct_boundary, container;
 var timer, pad_timer, cd_timer;
 var min, sec, stop = true;
 
+var statistics = [], game_cnt = 0;
 var game, reaction_time = [], mouseDetecting, ava_killball = 1;
 var n = 3, i;
 var balls, ids = [];
@@ -484,9 +583,6 @@ var mousePos, duration_time, total_following_time, following_time ,best_followin
 var mode, t, difficulty = 2, bk_color= "#FFFACD";
 var dif_r = 5, dif_mx = 15, dif_t = 200, dif_s = 0;
 function gamestart(){
-	////////////////////////// adjust difficulty, 結算畫面, statics畫面, 調色, 按鈕, 字體
-	//stop = false;
-	//////////////////////////
 	if(stop == false){
 		if(mode == 1)
 			min = 1, sec = 0;
@@ -519,11 +615,11 @@ function gamestart(){
 			}
 		}
 		
-		setTimeout(createBall, 1250);
+		setTimeout(createBall, 0);
 		if(mode == 2)
 			ava_killball = 0;
 		if(mode == 4)
-			setTimeout(createBall, 1250);
+			setTimeout(createBall, 0);
 		if(mode == 5 && difficulty == 1)
 			game = setInterval(frame, 40);
 		else
