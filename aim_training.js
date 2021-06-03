@@ -335,7 +335,7 @@ class ball{
 						outofrange = 1;
 						initial_pos = b.randomIni(initial_pos);
 						cwise = (Math.random() > 0.5) ? 1 : -1;
-						dis = [Math.random() * 2, Math.random() * 2];
+						dis = [Math.random() * 5, Math.random() * 5];
 						break;
 					}
 				}
