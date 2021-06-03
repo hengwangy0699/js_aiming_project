@@ -1,4 +1,4 @@
-var file_path ="https://hengwangy0699.github.io/js_aiming_project/"
+var file_path = "https://hengwangy0699.github.io/js_aiming_project/"
 function menu(){
 	stop = true;
 	if(game)
@@ -46,7 +46,7 @@ function gamemode(mode_num){
 			cd_timer.innerHTML = "Stick the ball with your pointer<br>for as long as you can!";
 		}
 		else if(mode_num == 3)
-			cd_timer.innerHTML = "How was the warm-up?<br>Lets try something HARDER.<br>Click on as many balls as you can.<br><h4>This time be quick and accurate</h4>";
+			cd_timer.innerHTML = "How was the warm-up?<br>Lets try something <b>HARDER</b>.<br>Click on as many balls as you can.<br><h4>This time be quick and accurate</h4>";
 		else if(mode_num == 4)
 			cd_timer.innerHTML = "Two balls at the same time!<br>Can you catch 'em all?";
 		else if(mode_num == 5)
