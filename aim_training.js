@@ -96,7 +96,7 @@ function timerCycle(){
 	}
 }
 
-readytoplay = function() {
+function readytoplay() {
 	footer_text.innerHTML = "Press ESC/Spacebar to end the game"
 	b1.remove();
 	b2.remove();
