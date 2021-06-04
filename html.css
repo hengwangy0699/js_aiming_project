@@ -28,10 +28,14 @@
 }
 
 #title_name {
-	font-size:35px;
-	top:6%;
+	font-size:50px;
+	top:4%;
 	left:2%;
 	position: absolute;
+	font-family: 'Odibee Sans', sans-serif;
+	letter-spacing: .175rem;
+	font-weight: 600;
+	color: rgba(40, 0, 77, .85);
 }
 
 #container {
@@ -89,8 +93,9 @@ img {
 	border: 2px solid #2c3e50;
 	color: #2c3e50;
 	display: block;
-	font-family: 'trebuchet ms';
+	font-family: 'Rajdhani', sans-serif;
 	font-size: 1rem;
+	font-weight: 800;
 	letter-spacing: 0.1rem;
 	padding: .4rem;
 	position: absolute;
@@ -103,7 +108,7 @@ img {
 	content: "";
 	background-color: rgba(167, 178, 196, .8);
 	box-shadow: -8px -8px 0 rgba(183, 174, 156, .7), 
-				6px 6px 0 rgba(181, 161, 169, .7);
+				5px 5px 0 rgba(181, 161, 169, .7);
 	position: absolute;
 	left: 1.5px;
 	top: 2px;

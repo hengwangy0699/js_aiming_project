@@ -61,7 +61,7 @@ function gamemode(mode_num){
 			cd_timer.innerHTML = "Try to click on as many balls as you can. The game will end in 30 seconds.";
 		}
 		else if(mode_num == 2){
-			target.innerHTML = "Following time: N/A";
+			target.innerHTML = "Follow time: N/A";
 			cd_timer.innerHTML = "Stick the ball with your pointer<br>for as long as you can!";
 		}
 		else if(mode_num == 3)
@@ -72,7 +72,7 @@ function gamemode(mode_num){
 			cd_timer.innerHTML = "Oh no! The balls are moving!<br>Catch them before they escape!";
 		else if(mode_num == 6){
 			target.innerHTML = "Avg. time: N/A";
-			cd_timer.innerHTML = "Let's see how fast you can click on<br><b>DEEZ BAD BALLS</b>";
+			cd_timer.innerHTML = "Let's see how fast you can click on<br><b>DEEZ BAD BALLS.</b><br><h5>They will only show on the center.</h5>";
 		}
 	};
 	req.send();
@@ -130,7 +130,7 @@ function readytoplay() {
 	dot_cnt = 0, accu_cnt = 0, ball_cnt = 0, ballid_cnt = 0, duration_cnt = 0, best_duration_cnt = 100000000000;
 	duration_time = 0, total_following_time = 0, following_time = 0, best_following_time = 0;
 	ava_killball = 1;
-	footer_text.innerHTML = "Press ESC/Spacebar to end the game"
+	footer_text.innerHTML = "&nbsp&nbsp&nbspPress <b>ESC</b> or <b>Spacebar</b> to end the game"
 	cd_timer.style.fontSize = "50px";
 	b1.remove();
 	b2.remove();
@@ -188,9 +188,7 @@ function end_game(event){
 			bt.style.left = "50%";
 			bt.style.bottom = "20px";
 			bt.innerHTML = "back";
-			gt.setAttribute("id", "g_table");
-			gt.style.background = "#FFFFFF";
-			gt.style.fontSize = "50px";
+			gt.setAttribute("id", "title_name");
 			document.getElementById("container").appendChild(bt);
 			title.style.transition = "0s";
 			title.style.opacity = "1";
@@ -494,7 +492,7 @@ class ball{
 						var accu_ratio = Math.floor((total_following_time / duration_time) * 1000);
 						accuracy.innerHTML = "Accuracy: " +(accu_ratio / 10) + "%";
 					}
-					target.innerHTML = "Following time: " + (total_following_time/100).toFixed(2);
+					target.innerHTML = "Follow time: " + (total_following_time/100).toFixed(2);
 					b.ball.style.background = bg;
 					if(following_time > best_following_time)
 						best_following_time = following_time;
@@ -700,8 +698,11 @@ function gamestart(){
 				accuracy.innerHTML = "Accuracy: " +(accu_ratio / 10) + "%";
 			}
 		}
+		if(mode == 6)
+			setTimeout(createBall, Math.round(Math.random() * 1500 + 750));
+		else
+			setTimeout(createBall, 0);
 		
-		setTimeout(createBall, 0);
 		if(mode == 2)
 			ava_killball = 0;
 		if(mode == 4)
