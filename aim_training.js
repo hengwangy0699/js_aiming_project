@@ -599,12 +599,36 @@ function end_game(event){
 									else
 										text2 += "D";
 								}
-								else{
-									if(avg_ac > 99 && avg_th > 99)
+								else if(sec < 12){
+									if(avg_ac > 95 && avg_th > 90)
 										text2 += "A";
-									else if(avg_ac > 80 && avg_th > 64)
+									else if(avg_ac > 80 && avg_th > 75)
 										text2 += "B";
 									else if(avg_ac > 40 && avg_th > 40)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else if(sec < 20){
+									if(avg_ac > 99 && avg_th > 96)
+										text2 += "S";
+									if(avg_ac > 90 && avg_th > 80)
+										text2 += "A";
+									else if(avg_ac > 80 && avg_th > 70)
+										text2 += "B";
+									else if(avg_ac > 30 && avg_th > 30)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 95 && avg_th > 92)
+										text2 += "S";
+									if(avg_ac > 85 && avg_th > 75)
+										text2 += "A";
+									else if(avg_ac > 70 && avg_th > 60)
+										text2 += "B";
+									else if(avg_ac > 20 && avg_th > 20)
 										text2 += "C";
 									else
 										text2 += "D";
