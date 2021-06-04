@@ -35,6 +35,7 @@
 #container {
 	letter-spacing: .1rem;
 	font-family: 'Bangers', cursive;
+	color: rgba(0, 0, 0, .7);
 }
 
 #countdown {

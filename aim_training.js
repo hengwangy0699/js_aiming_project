@@ -19,6 +19,12 @@ function menu(){
 		checkbox[0] = document.getElementById("easy");
 		checkbox[1] = document.getElementById("normal");
 		checkbox[2] = document.getElementById("hard");
+		image[0] = document.getElementById("img1");
+		image[1] = document.getElementById("img2");
+		image[2] = document.getElementById("img3");
+		image[3] = document.getElementById("img4");
+		image[4] = document.getElementById("img5");
+		image[5] = document.getElementById("img6");
 		if(difficulty == 1){
 			checkbox[0].checked = true;
 			checkbox[1].checked = false;
@@ -34,7 +40,6 @@ function menu(){
 			checkbox[1].checked = false;
 			checkbox[2].checked = true;
 		}
-		console.log(checkbox.length);
 		container.style.background = bk_color;
 	};
 	req.send();
@@ -155,7 +160,8 @@ function readytoplay() {
 
 function end_game(event){
 	if((mode == 1 && min == 0 && sec == 0) || (event && (event.key === "Escape" || event.keyCode === 32))){
-		stop = true;		
+		stop = true;	
+		ava_killball = 0;
 		if(mode == 2 && game){
 			document.getElementById("0").removeEventListener("mouseenter", function(){isOnDiv = 1;}, false);
 			document.getElementById("0").removeEventListener("mouseout", function(){isOnDiv = 0;}, false);
@@ -238,79 +244,379 @@ function end_game(event){
 						text2 += parseInt(sec); + "</li>";
 				}
 				if(mode == 2){
+					var avg_ac = Math.floor((total_following_time / duration_time) * 1000) / 10;
 					text1 += "<li>Following Time</li>";
 					text2 += "<li>" + (total_following_time / 100).toFixed(2) + "s</li>";
 					text1 += "<li>Longest Following Time</li>";
 					text2 += "<li>" + (best_following_time / 100).toFixed(2) + "s</li>";
 					text1 += "<li>Accuracy</li>";
-					text2 += "<li>" + Math.floor((total_following_time / duration_time) * 1000) / 10 + "%</li>";
-					text1 += "<li>Difficulty</li><li>Ranking</li></ul>";
+					text2 += "<li>" + avg_ac + "%</li>";
+					text1 += "<li>Difficulty</li><li style=\"padding-top: 5px; font-size: 30px\">Ranking</li></ul>";
 					if(difficulty == 1){
-						text2 += "<li>EASY</li><li><b>";
-						
+						text2 += "<li>EASY</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						if(avg_ac > 95)
+							text2 += "B"
+						else if(avg_ac >75)
+							text2 += "C"
+						else
+							text2 += "D"
 					}
 					else if(difficulty == 2){
-						text2 += "<li>NORMAL</li><li><b>";
-						
-						
+						text2 += "<li>NORMAL</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						if(avg_ac > 97)
+							text2 += "A"
+						else if(avg_ac > 87)
+							text2 += "B"
+						else if(avg_ac > 60)
+							text2 += "C"
+						else
+							text2 += "D"
 					}
 					else if(difficulty == 3){
-						text2 += "<li>HARD</li><li><b>";
-						
+						text2 += "<li>HARD</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						if(avg_ac > 73)
+							text2 += "S"
+						else if(avg_ac > 50)
+							text2 += "A"
+						else if(avg_ac > 30)
+							text2 += "B"
+						else if(avg_ac > 20)
+							text2 += "C"
+						else
+							text2 += "D"
 					}
 					text2 += "</b></li></ul>";
 				}
 				else if(mode == 6){
+					var avg_rt = Math.round(duration_cnt / accu_cnt);
+					var avg_ac = Math.floor((accu_cnt / dot_cnt) * 1000) / 10
 					text1 += "<li>Average Reation Time</li>";
-					text2 += "<li>" + Math.round(duration_cnt / accu_cnt) + "ms</li>";
+					text2 += "<li>" + avg_rt + "ms</li>";
 					text1 += "<li>Fastest Reation Time</li>";
 					text2 += "<li>" + Math.round(best_duration_cnt) + "ms</li>";
 					text1 += "<li>Accuracy</li>";
-					text2 += "<li>" + Math.floor((accu_cnt / dot_cnt) * 1000) / 10 + "%</li>";
-					text1 += "<li>Difficulty</li><li>Ranking</li></ul>";
-					console.log(ball_cnt, total_following_time, duration_cnt);
-					if(difficulty == 1){
-						text2 += "<li>EASY</li><li><b>";
-						
+					text2 += "<li>" + avg_ac + "%</li>";
+					text1 += "<li>Difficulty</li><li style=\"padding-top: 5px; font-size: 30px\">Ranking</li></ul>";
+					if(difficulty == 1)
+						text2 += "<li>EASY</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+					else if(difficulty == 2)
+						text2 += "<li>NORMAL</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+					else if(difficulty == 3)
+						text2 += "<li>HARD</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+					if(avg_rt < 230){
+						if(avg_ac > 90)
+							text2 += "S";
+						else if(avg_ac > 85)
+							text2 += "A";
+						else if(avg_ac > 80)
+							text2 += "B";
+						else if(avg_ac > 60)
+							text2 += "C";
 					}
-					else if(difficulty == 2){
-						text2 += "<li>NORMAL</li><li><b>";
-						
-						
+					else if(avg_rt < 260){
+						if(avg_ac > 90)
+							text2 += "A";
+						else if(avg_ac > 85)
+							text2 += "B";
+						else if(avg_ac > 80)
+							text2 += "C";
 					}
-					else if(difficulty == 3){
-						text2 += "<li>HARD</li><li><b>";
-						
+					else if(avg_rt < 300){
+						if(avg_ac > 90)
+							text2 += "B";
+						else if(avg_ac > 85)
+							text2 += "C";				
 					}
+					else if(avg_rt < 500 && avg_ac > 90)
+							text2 += "C";
+					else
+						text2 += "D";
 					text2 += "</b></li></ul>";
 				}
 				else{
+					var avg_th = Math.floor((accu_cnt / ball_cnt) * 1000) / 10;
+					var avg_ac = Math.floor((accu_cnt / dot_cnt) * 1000) / 10;
 					text1 += "<li>Number of Targets</li>";
 					text2 += "<li>" + ball_cnt + "</li>";
 					text1 += "<li>Target Hits</li>";
 					text2 += "<li>" + accu_cnt + "</li>";
 					text1 += "<li>Hit Rate</li>";
-					text2 += "<li>" + Math.floor((accu_cnt / ball_cnt) * 1000) / 10 + "%</li>";
+					text2 += "<li>" + avg_th + "%</li>";
 					text1 += "<li>Accuracy</li>";
 					if(dot_cnt)
-						text2 += "<li>" + Math.floor((accu_cnt / dot_cnt) * 1000) / 10 + "%</li>";
+						text2 += "<li>" + avg_ac + "%</li>";
 					else
 						text2 += "<li>0%</li>";
-					text1 += "<li>Difficulty</li><li>Ranking</li></ul>";
+					text1 += "<li>Difficulty</li><li style=\"padding-top: 5px; font-size: 30px\">Ranking</li></ul>";
 					if(difficulty == 1){
-						text2 += "<li>EASY</li><li><b>";
-						
-						
+						text2 += "<li>EASY</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						if(dot_cnt){
+							if(mode == 1){
+								if(sec < 10){
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "B";
+									else if(avg_ac > 85 && avg_th > 90)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else if(sec < 20){
+									if(avg_ac > 90 && avg_th > 80)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 95)
+										text2 += "C";
+									else
+										text2 +="D"
+								}
+							}
+							else if(mode == 3){
+								if(sec < 10)
+									text2 += "D";
+								else if(sec < 25){
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "B";
+									else if(avg_ac > 95 && avg_th > 95)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+							}
+							else if(mode == 4){
+								if(sec < 10)
+									text2 += "D";
+								else if(sec < 25){
+									if(avg_ac > 80 && avg_th > 60)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 90 && avg_th > 90)
+										text2 += "B";
+									else if(avg_ac > 70 && avg_th > 70)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+							}
+							else{
+								
+								
+							}
+						}
+						else
+							text2 += "D";
 					}
 					else if(difficulty == 2){
-						text2 += "<li>NORMAL</li><li><b>";
-						
-						
+						text2 += "<li>NORMAL</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						if(dot_cnt){
+							if(mode == 1){
+								if(sec < 10){
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "A";
+									else if(avg_ac > 96 && avg_th > 96)
+										text2 += "B";
+									else if(avg_ac > 80 && avg_th > 80)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else if(sec < 15){
+									if(avg_ac > 98 && avg_th > 96)
+										text2 += "B";
+									else if(avg_ac > 80 && avg_th > 60)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 90 && avg_th > 60)
+										text2 += "C";
+									else
+										text2 +="D"
+								}
+							}
+							else if(mode == 3){
+								if(sec < 8)
+									text2 += "D";
+								else if(sec < 15){
+									if(avg_ac > 90 && avg_th > 90)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "A";
+									else if(avg_ac > 85 && avg_th > 86)
+										text2 += "B";
+									else if(avg_ac > 95 && avg_th > 95)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+							}
+							else if(mode == 4){
+								if(sec < 6)
+									text2 += "D";
+								else if(sec < 13){
+									if(avg_ac > 90 && avg_th > 90)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else if(sec < 20){
+									if(avg_ac > 90 && avg_th > 80)
+										text2 += "B";
+									else if(avg_ac > 40 && avg_th > 40)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "A";
+									else if(avg_ac > 80 && avg_th > 64)
+										text2 += "B";
+									else if(avg_ac > 40 && avg_th > 40)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+							}
+							else{
+								
+								
+							}
+						}
+						else
+							text2 += "D";
 					}
 					else if(difficulty == 3){
-						text2 += "<li>HARD</li><li><b>";
-						
-						
+						text2 += "<li>HARD</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						if(dot_cnt){
+							if(mode == 1){
+								if(sec < 10){
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "S";
+									else if(avg_ac > 95 &&  avg_th > 95)
+										text2 += "A";
+									else if(avg_ac > 90 &&  avg_th > 80)
+										text2 += "B";
+									else if(avg_ac > 50 &&  avg_th > 20)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else if(sec < 15){
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "A";
+									else if(avg_ac > 95 && avg_th > 95)
+										text2 += "B";
+									else if(avg_ac > 60 && avg_th > 25)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 80 && avg_th > 70)
+										text2 += "C";
+									else
+										text2 += "D"
+								}
+							}
+							else if(mode == 3){
+								if(sec < 6){
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "A";
+									else if(avg_ac > 60 && avg_th > 60)
+										text2 += "B";
+									else if(accu_cnt)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else if(sec < 13){
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "A";
+									else if(avg_ac > 60 && avg_th > 60)
+										text2 += "B";
+									else if(accu_cnt)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else if(sec < 20){
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "S";
+									else if(avg_ac > 90 && avg_th > 90)
+										text2 += "A";
+									else if(avg_ac > 60 && avg_th > 60)
+										text2 += "B";
+									else if(accu_cnt > 3)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 85 && avg_th > 85)
+										text2 += "S";
+									else if(avg_ac > 75 && avg_th > 75)
+										text2 += "A";
+									else if(avg_ac > 40 && avg_th > 40)
+										text2 += "B";
+									else if(accu_cnt > 5)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								
+							}
+							else if(mode == 4){
+								if(sec < 3)
+									text2 += "D";
+								else if(sec < 5){
+									if(avg_ac > 80 && avg_th > 70)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else if(sec < 8){
+									if(avg_ac > 90 && avg_th > 80)
+										text2 += "B";
+									else if(avg_ac > 40 && avg_th > 40)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "A";
+									else if(avg_ac > 80 && avg_th > 64)
+										text2 += "B";
+									else if(avg_ac > 40 && avg_th > 40)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+							}
+							else{
+								
+								
+							}
+						}
+						else
+							text2 += "D";
 					}
 					text2 += "</b></li></ul>";
 				}
@@ -666,7 +972,7 @@ var accuracy, target, start_bt, footer_text;
 var dot_cnt, accu_cnt, ball_cnt, ballid_cnt, duration_cnt, best_duration_cnt;
 var mousePos, duration_time, total_following_time, following_time ,best_following_time;
 var mode, t, difficulty = 2, bk_color= "#A7B2C4";
-var checkbox = [];
+var checkbox = [], image = [];
 var dif_r = 5, dif_mx = 15, dif_t = 200, dif_s = 0;
 function gamestart(){
 	if(stop == false){
