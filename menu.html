@@ -1,24 +1,28 @@
 <link rel="stylesheet" type="text/css" href="menu.css">
 <div id ="title">
-	<div id = "title_name">Select mode<img id ="history" src ="image/1.png" onclick ="stat()"></div>
+	<div id = "title_name">Select mode
+	<!--
+	<img id ="history" src ="image/1.png" onclick ="stat()">
+	-->
+	</div>
 </div>
-<div id ="difficulty">
-	<button id ="b3" type ="button" onclick ="set_difficulty('1')">easy</button>
-	<button id ="b4" type ="button" onclick ="set_difficulty('2')">normal</button>
-	<button id ="b5" type ="button" onclick ="set_difficulty('3')">hard</button>
+<div id ="difficulty" class = "multi-button">
+	<input name="btn" type="checkbox" id ="easy" onclick ="set_difficulty('1')"><label for ="easy" id ="easy_label">easy</label>
+	<input name="btn" type="checkbox" id ="normal" onclick ="set_difficulty('2')" checked="checked"><label for ="normal" id ="normal_label">normal</label>
+	<input name="btn" type="checkbox" id ="hard" onclick ="set_difficulty('3')"><label for ="hard" id ="hard_label">hard</label>
 </div>
 
 <div id ="container">
 	<table id ="c_table">
 		<tr>
-			<td><div id ="c_table_td"><img src ="image/1.png" onclick ="gamemode('1')" ></div></td>
-			<td><div id ="c_table_td"><img src ="image/1.png" onclick ="gamemode('2')" ></div></td>
-			<td><div id ="c_table_td"><img src ="image/1.png" onclick ="gamemode('3')" ></div></td>
+			<td><div id ="c_table_td"><img src ="image/warmup.png" onclick ="gamemode('1')" ></div></td>
+			<td><div id ="c_table_td"><img src ="image/strafing.png" onclick ="gamemode('2')" ></div></td>
+			<td><div id ="c_table_td"><img src ="image/precision.png" onclick ="gamemode('3')" ></div></td>
 		</tr>
 		<tr>
-			<td><div id ="c_table_td"><img src ="image/1.png" onclick ="gamemode('4')" ></div></td>
-			<td><div id ="c_table_td"><img src ="image/1.png" onclick ="gamemode('5')" ></div></td>
-			<td><div id ="c_table_td"><img src ="image/1.png" onclick ="gamemode('6')" ></div></td>
+			<td><div id ="c_table_td"><img src ="image/doubleshot.png" onclick ="gamemode('4')" ></div></td>
+			<td><div id ="c_table_td"><img src ="image/sniping.png" onclick ="gamemode('5')" ></div></td>
+			<td><div id ="c_table_td"><img src ="image/reaction.png" onclick ="gamemode('6')" ></div></td>
 		</tr>
 	</table>
 </div>

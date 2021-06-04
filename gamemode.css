@@ -45,22 +45,11 @@
 #countdown:hover {
 	cursor: default
 }
-
-#b1 {
-	left: 50%;
-	transform: translate(-50%, 0%);
-	position: absolute;
-}
-#b2 {
-	right: 25px;
-	position: absolute;
-}
-
 #block1 {
 	width: 360px;
 	height: 300px;
 	top: 5%;
-	left: 15%;
+	left: 8%;
 	position: absolute;
 }
 #block2 {
@@ -71,9 +60,22 @@
 	position: absolute;
 }
 
+ul {
+	display:block;
+	margin: 0px;
+	font-size: 20px;
+	list-style-type: none;
+}
+li {
+	margin-bottom: 4px;
+}
+
+#no_score {
+	font-size: 20px;
+}
+
 #b2ul {
 	text-align: right;
-	list-style-type: none;
 }
 
 #footer_text {	
@@ -83,4 +85,159 @@
 	transform: translate(-50%, 0%);
 	position: absolute;
 	text-align: center;
+}
+#b1, #b1::after {
+	left: 50%;
+	transform: translate(-50%, 0%);
+	width: 60px;
+	height: 25px;
+	font-size: 12px;
+	font-family: 'Bebas Neue', cursive;
+	background: linear-gradient(45deg, transparent 5%, #484891 5%);
+	border: 0;
+	color: #fff;
+	letter-spacing: 2px;
+	line-height: 8px;
+	box-shadow: 3px 0px 0px #00E6F6;
+	outline: transparent;
+	position: absolute;
+}
+
+#b2, #b2::after {
+	right: 28px;
+	width: 60px;
+	height: 25px;
+	font-size: 12px;
+	font-family: 'Bebas Neue', cursive;
+	background: linear-gradient(45deg, transparent 5%, #613030 5%);
+	border: 0;
+	color: #fff;
+	letter-spacing: 2px;
+	line-height: 8px;
+	box-shadow: 3px 0px 0px #00E6F6;
+	outline: transparent;
+	position: absolute;
+}
+
+#b1::after {
+	--slice-0: inset(50% 50% 50% 50%);
+	--slice-1: inset(80% -6px 0 0);
+	--slice-2: inset(50% -6px 30% 0);
+	--slice-3: inset(10% -6px 85% 0);
+	--slice-4: inset(40% -6px 43% 0);
+	--slice-5: inset(80% -6px 5% 0);
+
+	content: 'BACK';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(45deg, transparent 3%, #00E6F6 3%, #00E6F6 5%, #484891 5%);
+	text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6;
+	clip-path: var(--slice-0);
+}
+#b2::after {
+	--slice-0: inset(50% 50% 50% 50%);
+	--slice-1: inset(80% -6px 0 0);
+	--slice-2: inset(50% -6px 30% 0);
+	--slice-3: inset(10% -6px 85% 0);
+	--slice-4: inset(40% -6px 43% 0);
+	--slice-5: inset(80% -6px 5% 0);
+
+	content: 'BACK';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(45deg, transparent 3%, #00E6F6 3%, #00E6F6 5%, #613030 5%);
+	text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6;
+	clip-path: var(--slice-0);
+}
+
+#b1:hover::after {
+  animation: .6s glitch1;
+  animation-timing-function: steps(2, end);
+}
+
+#b2:hover::after {
+  animation: .6s glitch2;
+  animation-timing-function: steps(2, end);
+}
+
+@keyframes glitch1 {
+  0% {
+    clip-path: var(--slice-2);
+    transform: translate(-5px, 0px);
+  }
+  20% {
+    clip-path: var(--slice-5);
+    transform: translate(20px, -10px);
+  }
+  30% {
+    clip-path: var(--slice-1);
+    transform: translate(-10px, 0px);
+  }
+  40% {
+    clip-path: var(--slice-3);
+    transform: translate(5px, 0px);
+  }
+  50% {
+    clip-path: var(--slice-1);
+    transform: translate(-20px, -10px);
+  }
+  60% {
+    clip-path: var(--slice-4);
+    transform: translate(5px, 10px);
+  }
+  80% {
+    clip-path: var(--slice-1);
+    transform: translate(-10px, 10px);
+  }
+  90% {
+    clip-path: var(--slice-3);
+    transform: translate(0px, 5px);
+  }
+}
+
+@keyframes glitch2 {
+  0% {
+    clip-path: var(--slice-1);
+    transform: translate(-20px, -10px);
+  }
+  10% {
+    clip-path: var(--slice-3);
+    transform: translate(10px, 10px);
+  }
+  20% {
+    clip-path: var(--slice-1);
+    transform: translate(-10px, 10px);
+  }
+  30% {
+    clip-path: var(--slice-3);
+    transform: translate(0px, 5px);
+  }
+  40% {
+    clip-path: var(--slice-2);
+    transform: translate(-5px, 0px);
+  }
+  60% {
+    clip-path: var(--slice-4);
+    transform: translate(5px, 10px);
+  }
+  70% {
+    clip-path: var(--slice-2);
+    transform: translate(-10px, 10px);
+  }
+  80% {
+    clip-path: var(--slice-5);
+    transform: translate(20px, -10px);
+  }
+  100% {
+    clip-path: var(--slice-1);
+    transform: translate(0);
+  }
 }

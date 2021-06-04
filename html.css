@@ -1,5 +1,5 @@
 #head, body {
-	background:	#8B3A3A;
+	background:	#484848;
 }
 
 #headp {
@@ -9,7 +9,8 @@
 	left: 50%;
 	transform: translate(-50%, 0%);
 	position: absolute;
-	background: #FFECEC; 
+}
+#headp img{
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 }
@@ -38,7 +39,7 @@
 	height: 350px;
 	top: 18%;
 	position: absolute;
-	background: #FFFACD;
+	background:	#A7B2C4;
 }
 
 #content {
@@ -60,12 +61,6 @@
 	position: absolute;
 }
 
-#bm {
-	left: 50%;
-	transform: translate(-50%, 0%);
-	position: absolute;
-}
-
 .unselectable {
 	-moz-user-select: -moz-none;
     -khtml-user-select: none;
@@ -78,4 +73,50 @@ img {
     max-width: 100%;
     max-height: 100%;
 	-webkit-user-drag: none;
+}
+
+
+
+#bm {
+	top: -15px;
+	left: 50%;
+	transform: translate(-50%, 0%);
+	position: absolute;
+	background: #FFFFFF;
+}
+
+.effect {
+	border: 2px solid #2c3e50;
+	color: #2c3e50;
+	display: block;
+	font-family: 'trebuchet ms';
+	font-size: 1rem;
+	letter-spacing: 0.1rem;
+	padding: .4rem;
+	position: absolute;
+	text-decoration: none;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.effect::before {
+	content: "";
+	background-color: rgba(167, 178, 196, .8);
+	box-shadow: -8px -8px 0 rgba(183, 174, 156, .7), 
+				6px 6px 0 rgba(181, 161, 169, .7);
+	position: absolute;
+	left: 1.5px;
+	top: 2px;
+	height: 102%;
+	width: 102%;
+	z-index: -1;
+	transition: all 0.4s ease;
+}
+
+.effect:hover::before {
+	box-shadow: none;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
 }

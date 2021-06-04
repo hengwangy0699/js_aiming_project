@@ -16,6 +16,25 @@ function menu(){
 		var content = document.getElementById("board");
 		content.innerHTML = this.responseText;
 		container = document.getElementById("container");
+		checkbox[0] = document.getElementById("easy");
+		checkbox[1] = document.getElementById("normal");
+		checkbox[2] = document.getElementById("hard");
+		if(difficulty == 1){
+			checkbox[0].checked = true;
+			checkbox[1].checked = false;
+			checkbox[2].checked = false;
+		}
+		else if(difficulty == 2){
+			checkbox[0].checked = false;
+			checkbox[1].checked = true;
+			checkbox[2].checked = false;
+		}
+		else if(difficulty == 3){
+			checkbox[0].checked = false;
+			checkbox[1].checked = false;
+			checkbox[2].checked = true;
+		}
+		console.log(checkbox.length);
 		container.style.background = bk_color;
 	};
 	req.send();
@@ -108,6 +127,9 @@ function timerCycle(){
 }
 
 function readytoplay() {
+	dot_cnt = 0, accu_cnt = 0, ball_cnt = 0, ballid_cnt = 0, duration_cnt = 0, best_duration_cnt = 100000000000;
+	duration_time = 0, total_following_time = 0, following_time = 0, best_following_time = 0;
+	ava_killball = 1;
 	footer_text.innerHTML = "Press ESC/Spacebar to end the game"
 	cd_timer.style.fontSize = "50px";
 	b1.remove();
@@ -133,7 +155,11 @@ function readytoplay() {
 
 function end_game(event){
 	if((mode == 1 && min == 0 && sec == 0) || (event && (event.key === "Escape" || event.keyCode === 32))){
-		stop = true;
+		stop = true;		
+		if(mode == 2 && game){
+			document.getElementById("0").removeEventListener("mouseenter", function(){isOnDiv = 1;}, false);
+			document.getElementById("0").removeEventListener("mouseout", function(){isOnDiv = 0;}, false);
+		}
 		if(game)
 			clearInterval(game);
 		if(reaction_time);
@@ -150,15 +176,17 @@ function end_game(event){
 		setTimeout(rebuild, 1500);
 		function rebuild(){
 			var score_container = container;
+			score_container.style.zIndex = "1";
 			score_container.innerHTML = "<div id =\"block1\"></div><div id =\"block2\"></div>";
 			document.getElementById("board").appendChild(score_container);
 			var bt = document.createElement("button");
 			var gt = document.createElement("div");
 			document.getElementById("footer_text").remove();
-			bt.setAttribute("id", "b1");
+			bt.setAttribute("id", "b2");
 			bt.setAttribute("onclick", "menu()");
-			bt.style.bottom = "25px";
-			bt.style.zIndex = "1";
+			bt.style.transform = "translate(-50%, 0%)";
+			bt.style.left = "50%";
+			bt.style.bottom = "20px";
 			bt.innerHTML = "back";
 			gt.setAttribute("id", "g_table");
 			gt.style.background = "#FFFFFF";
@@ -175,12 +203,12 @@ function end_game(event){
 			ct.remove();
 			var b_1 = document.getElementById("block1");
 			var b_2 = document.getElementById("block2");
-			var text1 = "<h3>";
-			var text2 = "<h3>&nbsp</h3>";
+			var text1 = "<h2>";
+			var text2 = "<h2>&nbsp</h2>";
 			if(mode == 1)
 				text1 += "Warmup mode";
 			else if(mode == 2)
-				text1 += "Speed mode";
+				text1 += "Strafing mode";
 			else if(mode == 3)
 				text1 += "Precision mode";
 			else if(mode == 4)
@@ -189,9 +217,9 @@ function end_game(event){
 				text1 += "Sniping mode";
 			else
 				text1 += "Reaction mode";
-			text1 += "</h3>";
+			text1 += "</h2>";
 			if(!ball_cnt && !total_following_time && !duration_cnt)
-				text1 += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You have no score in this game!";
+				text1 += "<p id = \"no_score\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You have no score in this game!</p>";
 			else{
 				text1 += "<ul><li>Game Time</li>";
 				text2 += "<ul id =\"b2ul\"><li>";
@@ -203,15 +231,62 @@ function end_game(event){
 				}
 				else{
 					if(min < 10)
-						text2 += "0" + min + ":";
+						text2 += "0" + parseInt(min) + ":";
 					else
-						text2 += min + ":";
+						text2 += parseInt(min) + ":";
 					if(sec < 10)
-						text2 += "0" + sec + "</li>";
+						text2 += "0" + parseInt(sec) + "</li>";
 					else
-						text2 += sec; + "</li>";
+						text2 += parseInt(sec); + "</li>";
 				}
-				if(mode == 1 || mode == 3 || mode == 4 || mode == 5){
+				if(mode == 2){
+					text1 += "<li>Following Time</li>";
+					text2 += "<li>" + (total_following_time / 100).toFixed(2) + "s</li>";
+					text1 += "<li>Longest Following Time</li>";
+					text2 += "<li>" + (best_following_time / 100).toFixed(2) + "s</li>";
+					text1 += "<li>Accuracy</li>";
+					text2 += "<li>" + Math.floor((total_following_time / duration_time) * 1000) / 10 + "%</li>";
+					text1 += "<li>Difficulty</li><li>Ranking</li></ul>";
+					if(difficulty == 1){
+						text2 += "<li>EASY</li><li><b>";
+						
+					}
+					else if(difficulty == 2){
+						text2 += "<li>NORMAL</li><li><b>";
+						
+						
+					}
+					else if(difficulty == 3){
+						text2 += "<li>HARD</li><li><b>";
+						
+					}
+					text2 += "</b></li></ul>";
+				}
+				else if(mode == 6){
+					text1 += "<li>Average Reation Time</li>";
+					text2 += "<li>" + Math.round(duration_cnt / accu_cnt) + "ms</li>";
+					text1 += "<li>Fastest Reation Time</li>";
+					text2 += "<li>" + Math.round(best_duration_cnt) + "ms</li>";
+					text1 += "<li>Accuracy</li>";
+					text2 += "<li>" + Math.floor((accu_cnt / dot_cnt) * 1000) / 10 + "%</li>";
+					text1 += "<li>Difficulty</li><li>Ranking</li></ul>";
+					console.log(ball_cnt, total_following_time, duration_cnt);
+					if(difficulty == 1){
+						text2 += "<li>EASY</li><li><b>";
+						
+					}
+					else if(difficulty == 2){
+						text2 += "<li>NORMAL</li><li><b>";
+						
+						
+					}
+					else if(difficulty == 3){
+						text2 += "<li>HARD</li><li><b>";
+						
+					}
+					text2 += "</b></li></ul>";
+				}
+				else{
 					text1 += "<li>Number of Targets</li>";
 					text2 += "<li>" + ball_cnt + "</li>";
 					text1 += "<li>Target Hits</li>";
@@ -223,32 +298,24 @@ function end_game(event){
 						text2 += "<li>" + Math.floor((accu_cnt / dot_cnt) * 1000) / 10 + "%</li>";
 					else
 						text2 += "<li>0%</li>";
-					
+					text1 += "<li>Difficulty</li><li>Ranking</li></ul>";
+					if(difficulty == 1){
+						text2 += "<li>EASY</li><li><b>";
+						
+						
+					}
+					else if(difficulty == 2){
+						text2 += "<li>NORMAL</li><li><b>";
+						
+						
+					}
+					else if(difficulty == 3){
+						text2 += "<li>HARD</li><li><b>";
+						
+						
+					}
+					text2 += "</b></li></ul>";
 				}
-				else if(mode == 2){
-					text1 += "<li> Time</li>";
-					text2 += "<li>" + following_time + "</li>";
-					text1 += "<li>Target Hits</li>";
-					text2 += "<li>" + accu_cnt + "</li>";
-					text1 += "<li>Hit Rate</li>";
-					text2 += "<li>" + Math.floor((accu_cnt / ball_cnt) * 1000) / 10 + "%</li>";
-					text1 += "<li>Accuracy</li>";
-					if(dot_cnt)
-						text2 += "<li>" + Math.floor((accu_cnt / dot_cnt) * 1000) / 10 + "%</li>";
-					else
-						text2 += "<li>0%</li>";
-				}
-				else if(mode == 6){
-					
-					
-				}
-				text1 += "<li>Difficulty</li></ul>";
-				if(difficulty == 1)
-					text2 += "<li>" + "EASY</li></ul>";
-				else if(difficulty == 2)
-					text2 += "<li>" + "NORMAL</li></ul>";
-				else if(difficulty == 2)
-					text2 += "<li>" + "HARD</li></ul>";
 				//statistics.push([]);
 			}
 			b_1.innerHTML = text1;
@@ -264,28 +331,46 @@ set_difficulty = function(diff){
 	difficulty = diff;
 	container.style.transition = "0.5s";
 	if(difficulty == 1){
-		bk_color = "#FFFFFF";
-		container.style.background = bk_color;
-		dif_r = 10;
-		dif_mx = 35;
-		dif_t = 500;
-		dif_s = 0;
+		if(checkbox[0].checked == false)
+			checkbox[0].checked = true;
+		else{
+			checkbox[1].checked = false;
+			checkbox[2].checked = false;
+			bk_color = "#B7AE9C";
+			container.style.background = bk_color;
+			dif_r = 10;
+			dif_mx = 35;
+			dif_t = 500;
+			dif_s = 0;
+		}
 	}
 	else if(difficulty == 2){
-		bk_color = "#FFFACD"
-		container.style.background = bk_color;
-		dif_r = 5;
-		dif_mx = 15;
-		dif_t = 200;
-		dif_s = 0;
+		if(checkbox[1].checked == false)
+			checkbox[1].checked = true;
+		else{
+			checkbox[0].checked = false;
+			checkbox[2].checked = false;
+			bk_color = "#A7B2C4";
+			container.style.background = bk_color;
+			dif_r = 5;
+			dif_mx = 15;
+			dif_t = 200;
+			dif_s = 0;
+		}
 	}
 	else if(difficulty == 3){
-		bk_color = "#E6CAFF"
-		container.style.background = bk_color;
-		dif_r = 0;
-		dif_mx = -5;
-		dif_t = 0;
-		dif_s = 0;
+		if(checkbox[2].checked == false)
+			checkbox[2].checked = true;
+		else{
+			checkbox[0].checked = false;
+			checkbox[1].checked = false;
+			bk_color = "#B5A1A9";
+			container.style.background = bk_color;
+			dif_r = 0;
+			dif_mx = -5;
+			dif_t = 0;
+			dif_s = 0;
+		}
 	}
 }
 
@@ -392,7 +477,7 @@ class ball{
 			b.ball.addEventListener("mouseout", function(){isOnDiv = 0;}, false)
 			mouseDetecting = setInterval(checkMousePos, 10);
 			function checkMousePos(){
-				if(isOnDiv >= 0){
+				if(isOnDiv >= 0 && stop == false){
 					duration_time++;
 					tcnt++;
 					var bg = "repeating-radial-gradient(#FFEEDD, #FFBB77, #FF8000, #BB5E00, #844200)";
@@ -517,6 +602,8 @@ class ball{
 				circle.style.pointerEvents = "none";
 				if(mode == 6){
 					duration_cnt += balls[id].duration;
+					if(balls[id].duration < best_duration_cnt)
+						best_duration_cnt = balls[id].duration;
 					var avg_duration = (duration_cnt / (accu_cnt * 1000)).toFixed(3);
 					target.innerHTML = "Avg. time: " + avg_duration + "s"
 					var duration_text = document.createElement("div");
@@ -574,13 +661,14 @@ var timer, pad_timer, cd_timer;
 var min, sec, stop = true;
 
 var statistics = [], game_cnt = 0;
-var game, reaction_time = [], mouseDetecting, ava_killball = 1;
+var game, reaction_time = [], mouseDetecting, ava_killball;
 var n = 3, i;
 var balls, ids = [];
 var accuracy, target, start_bt, footer_text;
-var dot_cnt, accu_cnt, ball_cnt, ballid_cnt, duration_cnt;
+var dot_cnt, accu_cnt, ball_cnt, ballid_cnt, duration_cnt, best_duration_cnt;
 var mousePos, duration_time, total_following_time, following_time ,best_following_time;
-var mode, t, difficulty = 2, bk_color= "#FFFACD";
+var mode, t, difficulty = 2, bk_color= "#A7B2C4";
+var checkbox = [];
 var dif_r = 5, dif_mx = 15, dif_t = 200, dif_s = 0;
 function gamestart(){
 	if(stop == false){
@@ -590,8 +678,6 @@ function gamestart(){
 			min = 0, sec = 0;
 		setTimeout(timerCycle, 1000);
 		balls = [], ids = [];
-		dot_cnt = 0, accu_cnt = 0, ball_cnt = 0, ballid_cnt = 0, duration_cnt = 0;
-		duration_time = 0, total_following_time = 0, following_time = 0, best_following_time = 0;
 		ct.onclick = function(mouse){
 			if(ava_killball){
 				var dot = document.createElement("div");
