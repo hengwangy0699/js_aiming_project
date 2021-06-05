@@ -19,12 +19,22 @@ function menu(){
 		checkbox[0] = document.getElementById("easy");
 		checkbox[1] = document.getElementById("normal");
 		checkbox[2] = document.getElementById("hard");
-		image[0] = document.getElementById("img1");
-		image[1] = document.getElementById("img2");
-		image[2] = document.getElementById("img3");
-		image[3] = document.getElementById("img4");
-		image[4] = document.getElementById("img5");
-		image[5] = document.getElementById("img6");
+		for(var zz = 0; zz < 6; zz++)
+			if(smode[zz]){
+				if(zz == 0)
+					document.getElementById("img1").setAttribute("src", "image/warmupS.png")
+				else if(zz = 1)
+					document.getElementById("img2").setAttribute("src", "image/strafingS.png")
+				else if(zz = 2)
+					document.getElementById("img3").setAttribute("src", "image/precisionS.png")
+				else if(zz = 3)
+					document.getElementById("img4").setAttribute("src", "image/doubleshotS.png")
+				else if(zz = 4)
+					document.getElementById("img5").setAttribute("src", "image/snipingS.png")
+				else if(zz = 5)
+					document.getElementById("img6").setAttribute("src", "image/reactionS.png")
+			}
+		
 		if(difficulty == 1){
 			checkbox[0].checked = true;
 			checkbox[1].checked = false;
@@ -276,7 +286,7 @@ function end_game(event){
 					else if(difficulty == 3){
 						text2 += "<li>HARD</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
 						if(avg_ac > 73){
-							img1.setAttribute("src", "image/strafingS.png");
+							smode[1] = 1;
 							text2 += "S";
 						}
 						else if(avg_ac > 50)
@@ -308,7 +318,7 @@ function end_game(event){
 						text2 += "<li>HARD</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
 					if(avg_rt < 230){
 						if(avg_ac > 90){
-							img1.setAttribute("src", "image/reactionS.png");
+							smode[5] = 1;
 							text2 += "S";
 						}
 						else if(avg_ac > 85)
@@ -549,7 +559,7 @@ function end_game(event){
 							if(mode == 1){
 								if(sec < 10){
 									if(avg_ac > 99 && avg_th > 99){
-										img1.setAttribute("src", "image/warmupS.png");
+										smode[0] = 1;
 										text2 += "S";
 									}
 									else if(avg_ac > 95 &&  avg_th > 95)
@@ -601,7 +611,7 @@ function end_game(event){
 								}
 								else if(sec < 20){
 									if(avg_ac > 99 && avg_th > 99){
-										img1.setAttribute("src", "image/precisionS.png");
+										smode[2] = 1;
 										text2 += "S";
 									}
 									else if(avg_ac > 90 && avg_th > 90)
@@ -615,7 +625,7 @@ function end_game(event){
 								}
 								else{
 									if(avg_ac > 85 && avg_th > 85){
-										img1.setAttribute("src", "image/precisionS.png");
+										smode[2] = 1;
 										text2 += "S";
 									}
 									else if(avg_ac > 75 && avg_th > 75)
@@ -658,7 +668,7 @@ function end_game(event){
 								}
 								else if(sec < 20){
 									if(avg_ac > 99 && avg_th > 96){
-										img1.setAttribute("src", "image/doubleshotS.png");
+										smode[3] = 1;
 										text2 += "S";
 									}
 									if(avg_ac > 90 && avg_th > 80)
@@ -672,7 +682,7 @@ function end_game(event){
 								}
 								else{
 									if(avg_ac > 95 && avg_th > 92){
-										img1.setAttribute("src", "image/doubleshotS.png");
+										smode[3] = 1;
 										text2 += "S";
 									}
 									if(avg_ac > 85 && avg_th > 75)
@@ -704,7 +714,7 @@ function end_game(event){
 								}
 								else{
 									if(avg_ac > 99 && avg_th > 99){
-										img1.setAttribute("src", "image/snipingS.png");
+										smode[4] = 1;
 										text2 += "S";
 									}
 									else if(avg_ac > 90 && avg_th > 90)
@@ -1075,7 +1085,7 @@ var accuracy, target, start_bt, footer_text;
 var dot_cnt, accu_cnt, ball_cnt, ballid_cnt, duration_cnt, best_duration_cnt;
 var mousePos, duration_time, total_following_time, following_time ,best_following_time;
 var mode, t, difficulty = 2, bk_color= "#A7B2C4";
-var checkbox = [], image = [];
+var checkbox = [], smode = [];
 var dif_r = 5, dif_mx = 15, dif_t = 200, dif_s = 0;
 function gamestart(){
 	if(stop == false){
