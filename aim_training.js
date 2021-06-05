@@ -692,7 +692,7 @@ function end_game(event){
 									else
 										text2 += "D";
 								}
-								else if(sec < 8){
+								else if(sec < 12){
 									if(avg_ac > 99 && avg_th > 99)
 										text2 += "A";
 									else if(avg_ac > 80 && avg_th > 80)
@@ -703,8 +703,10 @@ function end_game(event){
 										text2 += "D";
 								}
 								else{
-									if(avg_ac > 99 && avg_th > 99)
+									if(avg_ac > 99 && avg_th > 99){
+										img1.setAttribute("src", "image/snipingS.png");
 										text2 += "S";
+									}
 									else if(avg_ac > 90 && avg_th > 90)
 										text2 += "A";
 									else if(avg_ac > 70 && avg_th > 70)
