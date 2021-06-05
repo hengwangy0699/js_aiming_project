@@ -182,6 +182,7 @@ function end_game(event){
 		setTimeout(rebuild, 1500);
 		function rebuild(){
 			var score_container = container;
+			score_container.setAttribute("class", "unselectable")
 			score_container.style.zIndex = "1";
 			score_container.innerHTML = "<div id =\"block1\"></div><div id =\"block2\"></div>";
 			document.getElementById("board").appendChild(score_container);
@@ -274,8 +275,10 @@ function end_game(event){
 					}
 					else if(difficulty == 3){
 						text2 += "<li>HARD</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
-						if(avg_ac > 73)
-							text2 += "S"
+						if(avg_ac > 73){
+							img1.setAttribute("src", "image/strafingS.png");
+							text2 += "S";
+						}
 						else if(avg_ac > 50)
 							text2 += "A"
 						else if(avg_ac > 30)
@@ -304,8 +307,10 @@ function end_game(event){
 					else if(difficulty == 3)
 						text2 += "<li>HARD</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
 					if(avg_rt < 230){
-						if(avg_ac > 90)
+						if(avg_ac > 90){
+							img1.setAttribute("src", "image/reactionS.png");
 							text2 += "S";
+						}
 						else if(avg_ac > 85)
 							text2 += "A";
 						else if(avg_ac > 80)
@@ -410,8 +415,22 @@ function end_game(event){
 								}
 							}
 							else{
-								
-								
+								if(sec < 5)
+									text2 += "D";
+								else if(sec < 10){
+									if(avg_ac > 90 && avg_th > 90)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "B";
+									else if(avg_ac > 80 && avg_th > 80)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
 							}
 						}
 						else
@@ -495,8 +514,30 @@ function end_game(event){
 								}
 							}
 							else{
-								
-								
+								if(sec < 5){
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else if(sec < 10){
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "B";
+									else if(avg_ac > 80 && avg_th > 80)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "A";
+									else if(avg_ac > 90 && avg_th > 90)
+										text2 += "B";
+									else if(avg_ac > 70 && avg_th > 70)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
 							}
 						}
 						else
@@ -507,8 +548,10 @@ function end_game(event){
 						if(dot_cnt){
 							if(mode == 1){
 								if(sec < 10){
-									if(avg_ac > 99 && avg_th > 99)
+									if(avg_ac > 99 && avg_th > 99){
+										img1.setAttribute("src", "image/warmupS.png");
 										text2 += "S";
+									}
 									else if(avg_ac > 95 &&  avg_th > 95)
 										text2 += "A";
 									else if(avg_ac > 90 &&  avg_th > 80)
@@ -557,8 +600,10 @@ function end_game(event){
 										text2 += "D";
 								}
 								else if(sec < 20){
-									if(avg_ac > 99 && avg_th > 99)
+									if(avg_ac > 99 && avg_th > 99){
+										img1.setAttribute("src", "image/precisionS.png");
 										text2 += "S";
+									}
 									else if(avg_ac > 90 && avg_th > 90)
 										text2 += "A";
 									else if(avg_ac > 60 && avg_th > 60)
@@ -569,8 +614,10 @@ function end_game(event){
 										text2 += "D";
 								}
 								else{
-									if(avg_ac > 85 && avg_th > 85)
+									if(avg_ac > 85 && avg_th > 85){
+										img1.setAttribute("src", "image/precisionS.png");
 										text2 += "S";
+									}
 									else if(avg_ac > 75 && avg_th > 75)
 										text2 += "A";
 									else if(avg_ac > 40 && avg_th > 40)
@@ -610,8 +657,10 @@ function end_game(event){
 										text2 += "D";
 								}
 								else if(sec < 20){
-									if(avg_ac > 99 && avg_th > 96)
+									if(avg_ac > 99 && avg_th > 96){
+										img1.setAttribute("src", "image/doubleshotS.png");
 										text2 += "S";
+									}
 									if(avg_ac > 90 && avg_th > 80)
 										text2 += "A";
 									else if(avg_ac > 80 && avg_th > 70)
@@ -622,8 +671,10 @@ function end_game(event){
 										text2 += "D";
 								}
 								else{
-									if(avg_ac > 95 && avg_th > 92)
+									if(avg_ac > 95 && avg_th > 92){
+										img1.setAttribute("src", "image/doubleshotS.png");
 										text2 += "S";
+									}
 									if(avg_ac > 85 && avg_th > 75)
 										text2 += "A";
 									else if(avg_ac > 70 && avg_th > 60)
@@ -635,8 +686,34 @@ function end_game(event){
 								}
 							}
 							else{
-								
-								
+								if(sec < 3){
+									if(accu_cnt)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else if(sec < 8){
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "A";
+									else if(avg_ac > 80 && avg_th > 80)
+										text2 += "B";
+									else if(avg_ac > 30 && avg_th > 30)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
+								else{
+									if(avg_ac > 99 && avg_th > 99)
+										text2 += "S";
+									else if(avg_ac > 90 && avg_th > 90)
+										text2 += "A";
+									else if(avg_ac > 70 && avg_th > 70)
+										text2 += "B";
+									else if(accu_cnt)
+										text2 += "C";
+									else
+										text2 += "D";
+								}
 							}
 						}
 						else

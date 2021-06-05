@@ -87,6 +87,7 @@ img {
 	transform: translate(-50%, 0%);
 	position: absolute;
 	background: #FFFFFF;
+	user-select: none;
 }
 
 .effect {
