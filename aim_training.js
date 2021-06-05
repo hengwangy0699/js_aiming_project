@@ -19,21 +19,18 @@ function menu(){
 		checkbox[0] = document.getElementById("easy");
 		checkbox[1] = document.getElementById("normal");
 		checkbox[2] = document.getElementById("hard");
-		for(var zz = 0; zz < 6; zz++)
-			if(smode[zz]){
-				if(zz == 0)
-					document.getElementById("img1").setAttribute("src", "image/warmupS.png")
-				else if(zz = 1)
-					document.getElementById("img2").setAttribute("src", "image/strafingS.png")
-				else if(zz = 2)
-					document.getElementById("img3").setAttribute("src", "image/precisionS.png")
-				else if(zz = 3)
-					document.getElementById("img4").setAttribute("src", "image/doubleshotS.png")
-				else if(zz = 4)
-					document.getElementById("img5").setAttribute("src", "image/snipingS.png")
-				else if(zz = 5)
-					document.getElementById("img6").setAttribute("src", "image/reactionS.png")
-			}
+		if(smode[0] == 1)
+			document.getElementById("img1").setAttribute("src", "image/warmupS.png")
+		if(smode[1] == 1)
+			document.getElementById("img2").setAttribute("src", "image/strafingS.png")
+		if(smode[2] == 1)
+			document.getElementById("img3").setAttribute("src", "image/precisionS.png")
+		if(smode[3] == 1)
+			document.getElementById("img4").setAttribute("src", "image/doubleshotS.png")
+		if(smode[4] == 1)
+			document.getElementById("img5").setAttribute("src", "image/snipingS.png")
+		if(smode[5] == 1)
+			document.getElementById("img6").setAttribute("src", "image/reactionS.png")
 		
 		if(difficulty == 1){
 			checkbox[0].checked = true;
@@ -703,7 +700,7 @@ function end_game(event){
 										text2 += "D";
 								}
 								else if(sec < 12){
-									if(avg_ac > 99 && avg_th > 99)
+									if(avg_ac > 85 && avg_th > 85)
 										text2 += "A";
 									else if(avg_ac > 80 && avg_th > 80)
 										text2 += "B";
@@ -717,7 +714,7 @@ function end_game(event){
 										smode[4] = 1;
 										text2 += "S";
 									}
-									else if(avg_ac > 90 && avg_th > 90)
+									else if(avg_ac > 80 && avg_th > 80)
 										text2 += "A";
 									else if(avg_ac > 70 && avg_th > 70)
 										text2 += "B";
