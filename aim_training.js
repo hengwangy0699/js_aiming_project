@@ -84,7 +84,7 @@ function gamemode(mode_num){
 			cd_timer.innerHTML = "Oh no! The balls are moving!<br>Catch them before they escape!";
 		else if(mode_num == 6){
 			target.innerHTML = "Avg. time: N/A";
-			cd_timer.innerHTML = "Let's see how fast you can click on<br><b>DEEZ BAD BALLS.</b><br><h5>They will only show on the center.</h5>";
+			cd_timer.innerHTML = "Let's see how fast you can click on<br><b>DEEZ BAD BALLS.</b><br><h5>They will only show at the center.</h5>";
 		}
 	};
 	req.send();
