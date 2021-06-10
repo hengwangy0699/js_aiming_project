@@ -123,15 +123,19 @@ input[type="checkbox"] {
 }
 
 #history {
-	width: 100px;
-	height: 60px;
-	bottom: -5px;
+	width: 53px;
+	height: 53px;
+	bottom: 5px;
 	right: 10px;
 	position: absolute;
-	max-width: 200%;
-	max-height: 200%;
+	max-width: 100%;
+	max-height: 100%;
 	border-radius: 6%;
+	transition: 0.5s;
 }
 #history:hover {
 	cursor: pointer;
+	transition: 0.3s;
+	transform: scale(1.05);
+	opacity: 0.9;
 }

@@ -74,7 +74,7 @@ function gamemode(mode_num){
 		}
 		else if(mode_num == 2){
 			target.innerHTML = "Follow time: N/A";
-			cd_timer.innerHTML = "Stick the ball with your pointer<br>for as long as you can!";
+			cd_timer.innerHTML = "Stick the ball with your pointer<br>for as long as you can!<br><h5>When the ball become blue one,<br>then game started.</h5>";
 		}
 		else if(mode_num == 3)
 			cd_timer.innerHTML = "How was the warm-up?<br>Lets try something <b>HARDER</b>.<br>Click on as many balls as you can.<br><h4>This time be quick and accurate</h4>";
@@ -98,6 +98,26 @@ function stat(){
 		content.innerHTML = this.responseText;
 		container = document.getElementById("container");
 		container.style.background = bk_color;
+		var stat_len = statistics.length, stat_cnt = 0;
+		var stat_table;
+		if(stat_len){
+			stat_table = "<table id =\"stat_table\"><thead><th>Mode</th><th>Difficulty</th><th>Game time</th><th>Ranking</th></thead><tbody id =\"stat_content\">";
+			for(var stai = stat_len - 1; stai >= 0; stai--){
+				var data = statistics[stai];
+				stat_table += "<tr>";
+				for(var datai = 0; datai < data.length; datai++)
+					stat_table += "<td>" + data[datai] + "</td>";
+				stat_table += "</tr>";
+				stat_cnt ++;
+				if(stat_cnt > 9)
+					break;
+			}
+			stat_table += "</tbody></table>";
+		}
+		else
+			stat_table = "<div id=\"bb\">No record right now!</div></tbody></table>";
+		
+		container.innerHTML = stat_table;
 	};
 	req.send();
 }
@@ -213,23 +233,24 @@ function end_game(event){
 			gt.innerHTML = "Score"
 			document.getElementById("title").appendChild(gt);
 			ct.remove();
+			var mode_name, dif_s, game_time, ranking;
 			var b_1 = document.getElementById("block1");
 			var b_2 = document.getElementById("block2");
 			var text1 = "<h2>";
 			var text2 = "<h2>&nbsp</h2>";
 			if(mode == 1)
-				text1 += "Warmup mode";
+				mode_name = "Warmup";
 			else if(mode == 2)
-				text1 += "Strafing mode";
+				mode_name = "Strafing";
 			else if(mode == 3)
-				text1 += "Precision mode";
+				mode_name = "Precision";
 			else if(mode == 4)
-				text1 += "Doubleshot mode";
+				mode_name = "Doubleshot";
 			else if(mode == 5)
-				text1 += "Sniping mode";
+				mode_name = "Sniping";
 			else
-				text1 += "Reaction mode";
-			text1 += "</h2>";
+				mode_name = "Reaction";
+			text1 += mode_name + " mode</h2>";
 			if(!ball_cnt && !total_following_time && !duration_cnt)
 				text1 += "<p id = \"no_score\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You have no score in this game!</p>";
 			else{
@@ -237,20 +258,21 @@ function end_game(event){
 				text2 += "<ul id =\"b2ul\"><li>";
 				if(mode == 1){
 					if(sec > 20)
-						text2 += "00:0" + (30 - sec) + "</li>";
+						game_time = "00:0" + (30 - sec);
 					else
-						text2 += "00:" + (30 - sec) + "</li>";
+						game_time = "00:" + (30 - sec);
 				}
 				else{
 					if(min < 10)
-						text2 += "0" + parseInt(min) + ":";
+						game_time = "0" + parseInt(min) + ":";
 					else
-						text2 += parseInt(min) + ":";
+						game_time = parseInt(min) + ":";
 					if(sec < 10)
-						text2 += "0" + parseInt(sec) + "</li>";
+						game_time += "0" + parseInt(sec);
 					else
-						text2 += parseInt(sec); + "</li>";
+						game_time += parseInt(sec);
 				}
+				text2 += game_time + "</li>";
 				if(mode == 2){
 					var avg_ac = Math.floor((total_following_time / duration_time) * 1000) / 10;
 					text1 += "<li>Following Time</li>";
@@ -261,41 +283,94 @@ function end_game(event){
 					text2 += "<li>" + avg_ac + "%</li>";
 					text1 += "<li>Difficulty</li><li style=\"padding-top: 5px; font-size: 30px\">Ranking</li></ul>";
 					if(difficulty == 1){
-						text2 += "<li>EASY</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
-						if(avg_ac > 95)
-							text2 += "B"
-						else if(avg_ac >75)
-							text2 += "C"
-						else
-							text2 += "D"
+						dif_s = "EASY";
+						if(sec < 3)
+							ranking = "D";
+						else if(sec < 10){
+							if(avg_ac > 75)
+								ranking = "C";
+							else
+								ranking = "D";
+						}
+						else{
+							if(avg_ac > 95)
+								ranking = "B";
+							else if(avg_ac > 65)
+								ranking = "C";
+							else
+								ranking = "D";
+						}
 					}
 					else if(difficulty == 2){
-						text2 += "<li>NORMAL</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
-						if(avg_ac > 97)
-							text2 += "A"
-						else if(avg_ac > 87)
-							text2 += "B"
-						else if(avg_ac > 60)
-							text2 += "C"
-						else
-							text2 += "D"
+						dif_s = "NORMAL";
+						if(sec < 3)
+							ranking = "D";
+						else if(sec < 6){
+							if(avg_ac > 85)
+								ranking = "B";
+							else if(avg_ac > 60)
+								ranking = "C";
+							else
+								ranking = "D";
+						}
+						else{
+							if(avg_ac > 90)
+								ranking = "A";
+							else if(avg_ac > 80)
+								ranking = "B";
+							else if(avg_ac > 60)
+								ranking = "C";
+							else
+								ranking = "D";
+						}
 					}
 					else if(difficulty == 3){
-						text2 += "<li>HARD</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
-						if(avg_ac > 73){
-							smode[1] = 1;
-							text2 += "S";
+						dif_s = "HARD";
+						if(sec < 3){
+							if(avg_ac)
+								ranking = "C";
+							else
+								ranking = "D";
 						}
-						else if(avg_ac > 50)
-							text2 += "A"
-						else if(avg_ac > 30)
-							text2 += "B"
-						else if(avg_ac > 20)
-							text2 += "C"
-						else
-							text2 += "D"
+						else if(sec < 6){
+							if(avg_ac > 75)
+								ranking = "A";
+							else if(avg_ac > 50)
+								ranking = "B";
+							else if(avg_ac)
+								ranking = "C";
+							else
+								ranking = "D";
+						}
+						else if(sec < 10){
+							if(avg_ac > 70){
+								smode[1] = 1;
+								ranking = "S";
+							}
+							else if(avg_ac > 60)
+								ranking = "A";
+							else if(avg_ac > 50)
+								ranking = "B";
+							else if(avg_ac)
+								ranking = "C";
+							else
+								ranking = "D";
+						}
+						else{
+							if(avg_ac > 64){
+								smode[1] = 1;
+								ranking = "S";
+							}
+							else if(avg_ac > 50)
+								ranking = "A";
+							else if(avg_ac > 45)
+								ranking = "B";
+							else if(avg_ac)
+								ranking = "C";
+							else
+								ranking = "D";
+						}
 					}
-					text2 += "</b></li></ul>";
 				}
 				else if(mode == 6){
 					var avg_rt = Math.round(duration_cnt / accu_cnt);
@@ -308,42 +383,47 @@ function end_game(event){
 					text2 += "<li>" + avg_ac + "%</li>";
 					text1 += "<li>Difficulty</li><li style=\"padding-top: 5px; font-size: 30px\">Ranking</li></ul>";
 					if(difficulty == 1)
-						text2 += "<li>EASY</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						dif_s = "EASY";
 					else if(difficulty == 2)
-						text2 += "<li>NORMAL</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						dif_s = "NORMAL";
 					else if(difficulty == 3)
-						text2 += "<li>HARD</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						dif_s = "HARD";
 					if(avg_rt < 230){
 						if(avg_ac > 90){
 							smode[5] = 1;
-							text2 += "S";
+							ranking = "S";
 						}
 						else if(avg_ac > 85)
-							text2 += "A";
+							ranking = "A";
 						else if(avg_ac > 80)
-							text2 += "B";
+							ranking = "B";
 						else if(avg_ac > 60)
-							text2 += "C";
+							ranking = "C";
+						else
+							ranking = "D";
 					}
 					else if(avg_rt < 260){
 						if(avg_ac > 90)
-							text2 += "A";
+							ranking = "A";
 						else if(avg_ac > 85)
-							text2 += "B";
+							ranking = "B";
 						else if(avg_ac > 80)
-							text2 += "C";
+							ranking = "C";
+						else
+							ranking = "D";
 					}
 					else if(avg_rt < 300){
 						if(avg_ac > 90)
-							text2 += "B";
+							ranking = "B";
 						else if(avg_ac > 85)
-							text2 += "C";				
+							ranking = "C";	
+						else
+							ranking = "D";			
 					}
 					else if(avg_rt < 500 && avg_ac > 90)
-							text2 += "C";
+							ranking = "C";
 					else
-						text2 += "D";
-					text2 += "</b></li></ul>";
+						ranking = "D";
 				}
 				else{
 					var avg_th = Math.floor((accu_cnt / ball_cnt) * 1000) / 10;
@@ -361,376 +441,376 @@ function end_game(event){
 						text2 += "<li>0%</li>";
 					text1 += "<li>Difficulty</li><li style=\"padding-top: 5px; font-size: 30px\">Ranking</li></ul>";
 					if(difficulty == 1){
-						text2 += "<li>EASY</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						dif_s = "EASY";
 						if(dot_cnt){
 							if(mode == 1){
 								if(sec < 10){
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 85 && avg_th > 90)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else if(sec < 20){
 									if(avg_ac > 90 && avg_th > 80)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
 									if(avg_ac > 95)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 +="D"
+										ranking ="D"
 								}
 							}
 							else if(mode == 3){
 								if(sec < 10)
-									text2 += "D";
+									ranking = "D";
 								else if(sec < 25){
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 95 && avg_th > 95)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 							}
 							else if(mode == 4){
 								if(sec < 10)
-									text2 += "D";
+									ranking = "D";
 								else if(sec < 25){
 									if(avg_ac > 80 && avg_th > 60)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
 									if(avg_ac > 90 && avg_th > 90)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 70 && avg_th > 70)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 							}
 							else{
 								if(sec < 5)
-									text2 += "D";
+									ranking = "D";
 								else if(sec < 10){
 									if(avg_ac > 90 && avg_th > 90)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 80 && avg_th > 80)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 							}
 						}
 						else
-							text2 += "D";
+							ranking = "D";
 					}
 					else if(difficulty == 2){
-						text2 += "<li>NORMAL</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						dif_s = "NORMAL";
 						if(dot_cnt){
 							if(mode == 1){
 								if(sec < 10){
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 96 && avg_th > 96)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 80 && avg_th > 80)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else if(sec < 15){
 									if(avg_ac > 98 && avg_th > 96)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 80 && avg_th > 60)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
 									if(avg_ac > 90 && avg_th > 60)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 +="D"
+										ranking ="D"
 								}
 							}
 							else if(mode == 3){
 								if(sec < 8)
-									text2 += "D";
+									ranking = "D";
 								else if(sec < 15){
 									if(avg_ac > 90 && avg_th > 90)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 85 && avg_th > 86)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 95 && avg_th > 95)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 							}
 							else if(mode == 4){
 								if(sec < 6)
-									text2 += "D";
+									ranking = "D";
 								else if(sec < 13){
 									if(avg_ac > 90 && avg_th > 90)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else if(sec < 20){
 									if(avg_ac > 90 && avg_th > 80)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 40 && avg_th > 40)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 80 && avg_th > 64)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 40 && avg_th > 40)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 							}
 							else{
 								if(sec < 5){
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else if(sec < 10){
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 80 && avg_th > 80)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 90 && avg_th > 90)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 70 && avg_th > 70)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 							}
 						}
 						else
-							text2 += "D";
+							ranking = "D";
 					}
 					else if(difficulty == 3){
-						text2 += "<li>HARD</li><li style=\"padding-top: 5px; font-size: 30px\"><b>";
+						dif_s = "HARD";
 						if(dot_cnt){
 							if(mode == 1){
 								if(sec < 10){
-									if(avg_ac > 99 && avg_th > 99){
+									if(avg_ac > 95 && avg_th > 95){
 										smode[0] = 1;
-										text2 += "S";
+										ranking = "S";
 									}
-									else if(avg_ac > 95 &&  avg_th > 95)
-										text2 += "A";
-									else if(avg_ac > 90 &&  avg_th > 80)
-										text2 += "B";
+									else if(avg_ac > 90 &&  avg_th > 90)
+										ranking = "A";
+									else if(avg_ac > 80 &&  avg_th > 80)
+										ranking = "B";
 									else if(avg_ac > 50 &&  avg_th > 20)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else if(sec < 15){
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 95 && avg_th > 95)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 60 && avg_th > 25)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
 									if(avg_ac > 80 && avg_th > 70)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D"
+										ranking = "D"
 								}
 							}
 							else if(mode == 3){
 								if(sec < 6){
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 60 && avg_th > 60)
-										text2 += "B";
+										ranking = "B";
 									else if(accu_cnt)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else if(sec < 13){
 									if(avg_ac > 99 && avg_th > 99)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 60 && avg_th > 60)
-										text2 += "B";
+										ranking = "B";
 									else if(accu_cnt)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else if(sec < 20){
-									if(avg_ac > 99 && avg_th > 99){
+									if(avg_ac > 95 && avg_th > 95){
 										smode[2] = 1;
-										text2 += "S";
+										ranking = "S";
 									}
 									else if(avg_ac > 90 && avg_th > 90)
-										text2 += "A";
-									else if(avg_ac > 60 && avg_th > 60)
-										text2 += "B";
+										ranking = "A";
+									else if(avg_ac > 76 && avg_th > 70)
+										ranking = "B";
 									else if(accu_cnt > 3)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
-									if(avg_ac > 85 && avg_th > 85){
+									if(avg_ac > 90 && avg_th > 90){
 										smode[2] = 1;
-										text2 += "S";
+										ranking = "S";
 									}
-									else if(avg_ac > 75 && avg_th > 75)
-										text2 += "A";
-									else if(avg_ac > 40 && avg_th > 40)
-										text2 += "B";
+									else if(avg_ac > 80 && avg_th > 80)
+										ranking = "A";
+									else if(avg_ac > 70 && avg_th > 60)
+										ranking = "B";
 									else if(accu_cnt > 5)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								
 							}
 							else if(mode == 4){
 								if(sec < 3)
-									text2 += "D";
+									ranking = "D";
 								else if(sec < 5){
 									if(avg_ac > 80 && avg_th > 70)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else if(sec < 8){
 									if(avg_ac > 90 && avg_th > 80)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 40 && avg_th > 40)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else if(sec < 12){
 									if(avg_ac > 95 && avg_th > 90)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 80 && avg_th > 75)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 40 && avg_th > 40)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else if(sec < 20){
 									if(avg_ac > 99 && avg_th > 96){
 										smode[3] = 1;
-										text2 += "S";
+										ranking = "S";
 									}
 									if(avg_ac > 90 && avg_th > 80)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 80 && avg_th > 70)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 30 && avg_th > 30)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
 									if(avg_ac > 95 && avg_th > 92){
 										smode[3] = 1;
-										text2 += "S";
+										ranking = "S";
 									}
 									if(avg_ac > 85 && avg_th > 75)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 70 && avg_th > 60)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 20 && avg_th > 20)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 							}
 							else{
 								if(sec < 3){
 									if(accu_cnt)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else if(sec < 12){
 									if(avg_ac > 85 && avg_th > 85)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 80 && avg_th > 80)
-										text2 += "B";
+										ranking = "B";
 									else if(avg_ac > 30 && avg_th > 30)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 								else{
 									if(avg_ac > 99 && avg_th > 99){
 										smode[4] = 1;
-										text2 += "S";
+										ranking = "S";
 									}
 									else if(avg_ac > 80 && avg_th > 80)
-										text2 += "A";
+										ranking = "A";
 									else if(avg_ac > 70 && avg_th > 70)
-										text2 += "B";
+										ranking = "B";
 									else if(accu_cnt)
-										text2 += "C";
+										ranking = "C";
 									else
-										text2 += "D";
+										ranking = "D";
 								}
 							}
 						}
 						else
-							text2 += "D";
+							ranking = "D";
 					}
-					text2 += "</b></li></ul>";
 				}
-				//statistics.push([]);
+				text2 += "<li>" + dif_s + "</li><li style=\"padding-top: 5px; font-size: 30px\"><b>" + ranking + "</b></li></ul>";
+				statistics.push([mode_name, dif_s, game_time, ranking]);
 			}
 			b_1.innerHTML = text1;
 			b_2.innerHTML = text2;
@@ -887,7 +967,7 @@ class ball{
 		if(!b.mouse_detect){
 			b.mouse_detect = 1;
 			var isOnDiv, tcnt = 0;
-			b.ball.addEventListener("mouseenter", function(){isOnDiv = 1;}, false)
+			b.ball.addEventListener("mouseenter", function(){isOnDiv = 1}, false)
 			b.ball.addEventListener("mouseout", function(){isOnDiv = 0;}, false)
 			mouseDetecting = setInterval(checkMousePos, 10);
 			function checkMousePos(){
@@ -898,7 +978,6 @@ class ball{
 					if(isOnDiv){
 						following_time++;
 						total_following_time++;
-						//bg = "repeating-radial-gradient(#ECFFFF, #80FFFF, #00CACA, #007979, #003E3E)";
 						bg = "repeating-radial-gradient(#D2E9FF, #66B3FF, #0072E3, #004B97, #003060)";
 					}
 					else
@@ -947,10 +1026,12 @@ class ball{
 				b.ball.style.left = b.pos[0] + "px";
 				b.ball.style.top = b.pos[1] + "px";
 				tcnt++; 
-				if(tcnt == progress_time * 40)
+				if(tcnt >= progress_time * 40)
 					b.progressing = 0;
 				else if(stop == false)
 					setTimeout(curve_moving, 25);
+				
+				
 			}
 		}
 	}

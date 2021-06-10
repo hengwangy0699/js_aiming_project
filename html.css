@@ -53,6 +53,14 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	position: absolute;
+	padding-top: 10px;
+	text-align: left;
+	font-family: 'Rajdhani', sans-serif;
+	font-size: 30px;
+}
+
+#modes {
+	padding: 10px 50px;
 	text-align: center;
 }
 
