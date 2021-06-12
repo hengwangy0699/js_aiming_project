@@ -142,7 +142,7 @@ function timerCycle(){
 		}
 		else{
 			sec--;
-			if(sec == -1)
+			if(sec == -2)
 				min = 0, sec = 29;
 			if(sec < 10)
 				sec = '0' + sec;
@@ -161,6 +161,7 @@ function timerCycle(){
 function readytoplay() {
 	dot_cnt = 0, accu_cnt = 0, ball_cnt = 0, ballid_cnt = 0, duration_cnt = 0, best_duration_cnt = 100000000000;
 	duration_time = 0, total_following_time = 0, following_time = 0, best_following_time = 0;
+	balls = [], ids = [];
 	ava_killball = 1;
 	footer_text.innerHTML = "&nbsp&nbsp&nbspPress <b>ESC</b> or <b>Spacebar</b> to end the game"
 	cd_timer.style.fontSize = "50px";
@@ -169,6 +170,8 @@ function readytoplay() {
 	window.addEventListener("keydown", end_game, false);
 	var countdown = 3;
 	stop = false;
+	if(mode == 1)
+		sec = -1;
 	play_countdown();
 	function play_countdown(){
 		if(stop == false) {
@@ -679,7 +682,7 @@ function end_game(event){
 								else if(sec < 13){
 									if(avg_ac > 99 && avg_th > 99)
 										ranking = "A";
-									else if(avg_ac > 60 && avg_th > 60)
+									else if(avg_ac > 60 && avg_th > 40)
 										ranking = "B";
 									else if(accu_cnt)
 										ranking = "C";
@@ -693,7 +696,7 @@ function end_game(event){
 									}
 									else if(avg_ac > 90 && avg_th > 90)
 										ranking = "A";
-									else if(avg_ac > 76 && avg_th > 70)
+									else if(avg_ac > 50 && avg_th > 30)
 										ranking = "B";
 									else if(accu_cnt > 3)
 										ranking = "C";
@@ -818,8 +821,6 @@ function end_game(event){
 		window.removeEventListener("keydown", end_game, false);
 	}
 }
-
-function handleMouseMove(event){mousePos = {x:event.pageX, y:event.pageY};}
 
 set_difficulty = function(diff){
 	difficulty = diff;
@@ -966,7 +967,7 @@ class ball{
 		var b = this;
 		if(!b.mouse_detect){
 			b.mouse_detect = 1;
-			var isOnDiv, tcnt = 0;
+			var isOnDiv = -1, tcnt = 0;
 			b.ball.addEventListener("mouseenter", function(){isOnDiv = 1}, false)
 			b.ball.addEventListener("mouseout", function(){isOnDiv = 0;}, false)
 			mouseDetecting = setInterval(checkMousePos, 10);
@@ -1070,7 +1071,7 @@ class ball{
 			for(var k = 0; k < 10; k++)
 				reaction_time[k] = setInterval(cal_time, 10);
 			function cal_time(){
-				if(b.duration == 1750 || !b.checkAlive())
+				if(b.duration >= 1750 || !b.checkAlive())
 					b.delball(b.id);
 				else if(b.checkAlive())
 					b.duration++;
@@ -1127,8 +1128,6 @@ class ball{
 	}
 	
 	delball(id){
-		this.ball.style.transition = "0.15s";
-		this.ball.style.opacity = "0";
 		this.alive = 0;
 		if(mode != 6){
 			ball_cnt++;
@@ -1145,9 +1144,6 @@ class ball{
 	}
 
 	checkAlive(){return this.alive}
-	getID(){return this.id}
-	getFather(){return this.father}
-	getCBoarder(){return this.ct_boundary}
 	getStyle(){return this.ball.style};
 }
 
@@ -1158,7 +1154,7 @@ var min, sec, stop = true;
 var statistics = [], game_cnt = 0;
 var game, reaction_time = [], mouseDetecting, ava_killball;
 var n = 3, i;
-var balls, ids = [];
+var balls, ids;
 var accuracy, target, start_bt, footer_text;
 var dot_cnt, accu_cnt, ball_cnt, ballid_cnt, duration_cnt, best_duration_cnt;
 var mousePos, duration_time, total_following_time, following_time ,best_following_time;
@@ -1168,11 +1164,10 @@ var dif_r = 5, dif_mx = 15, dif_t = 200, dif_s = 0;
 function gamestart(){
 	if(stop == false){
 		if(mode == 1)
-			min = 1, sec = 0;
+			min = 0, sec = 30;
 		else
 			min = 0, sec = 0;
 		setTimeout(timerCycle, 1000);
-		balls = [], ids = [];
 		ct.onclick = function(mouse){
 			if(ava_killball){
 				var dot = document.createElement("div");
